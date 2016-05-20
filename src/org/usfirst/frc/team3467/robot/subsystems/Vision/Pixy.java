@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.AnalogInput;
 
-public class GRIP {
+public class Pixy {
 	
 	private DigitalInput axis;
 	private AnalogInput value;
@@ -18,9 +18,9 @@ public class GRIP {
 	//Height of of the top of the Top Target
 	private static final int TOP_TARGET_HEIGHT = 97;
 	
-	//Image Variables
-	private static final double Image_length = 320; //Pixels
-	private static final double Image_height = 240; //Pixels
+	//Image Variables Axis Cameras
+	private static final double Image_length_Axis = 320; //Pixels
+	private static final double Image_height_Axis = 240; //Pixels
 	
 	//Camera Variables (Axis M1011) Original Camera
 	private static final double M1011_FOVx = 47.0; //Degrees
@@ -31,6 +31,15 @@ public class GRIP {
 	private static final double M1013_FOVx = 67.0; //Degrees
 	private static final double M1013_length = 0.435; //Inches
 	private static final double M1013_focus = 0.1102; //Inches
+	
+	//Pixy Camera Variables
+	private static final double Pixy_FOVx = 75.0;  //Degrees
+	private static final double Pixy_length = 0.0;  //Inches
+	private static final double Pixy_focus = 0.0; //Inches
+	
+	//Image Variables Pixy Camera
+	private static final double Image_length_Pixy = 1280.0; //Pixels
+	private static final double Image_height_Pixy = 800.0; //Pixels
 	
 	//Target Variables
 	private static final double Target_Length = 20; //Inches
@@ -57,7 +66,7 @@ public class GRIP {
 	private double Centerx = 0.0;;
 	private double Centery = 0.0;
 	
-	public GRIP() {
+	public Pixy() {
 		axis = new DigitalInput(0);
 		
 		value = new AnalogInput(0);
@@ -66,17 +75,13 @@ public class GRIP {
 	}
 	
 	//Get values from Network Table and work with those values
-	public void createImage () {
-		
-		
-						
-					//Print values to SmartDashboard
-						SmartDashboard.putNumber("Vision: Centerx", Centerx);
-						SmartDashboard.putNumber("Vision: Centery", Centery);
-						//SmartDashboard.putNumber("Vision: Width", Width);			
-						//SmartDashboard.putNumber("Vision: Contours", centerx.length);				
+	public void createImage () {			
+		//Print values to SmartDashboard
+		SmartDashboard.putNumber("Vision: Centerx", Centerx);
+		SmartDashboard.putNumber("Vision: Centery", Centery);
+		//SmartDashboard.putNumber("Vision: Width", Width);			
+		//SmartDashboard.putNumber("Vision: Contours", centerx.length);				
 	}
-	
 	
 	//Get the specific values from the network table
 	public double getCenterX() {
@@ -143,11 +148,12 @@ public class GRIP {
 		
 		//Calculates The Distance From the Target
 			//distance_delta = (Target_Length_ft * M1013_FOVx_px)/(2 * Width * Math.tan(angle_theta));
-		//	distance_delta = (M1013_focus * Target_Height)/((Image_height - Height) * M1013_length/Image_height) + 0;
+			//distance_delta = (M1013_focus * Target_Height)/((Image_height_Axis - Height) * M1013_length/Image_height) + 0;
+			//distance_delta = (M1013_focus * Target_Height)/((Image_height - Height) * M1013_length/Image_height) + 0;
 		
 		//Calculates The Angle of the Target
 			//angle_theta = ((Centerx - Image_length/2)/(Image_length/2)) * M1011_FOVx;
-			angle_theta = (Math.atan((Centerx - Image_length/2)/effectiveLeg) *180)/Math.PI;
+			angle_theta = (Math.atan((Centerx - Image_length_Axis/2)/effectiveLeg) *180)/Math.PI;
 		
 		//Calculate the distances and angles needed to move
 			changeinDistance = distance_delta - target_distance;
